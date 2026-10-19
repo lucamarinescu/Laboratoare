@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>CSS_B1</title>
+<style>
+    body {
+    background-color: #ffffcc;
+    }
+.center {
+  text-align: center;
+  color: white;
+}
+    h1 {
+        background-color: #00cc66;
+        color: orange;
+    }
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+.centre {
+border: 5px solid blue;
+ padding: 15px;
+}
+#s1 table {
+  background-color: blue;
+}
+#s2 th, #s2 td {
+  border: 5px solid blue;
+  padding: 15px;
+}
+#s1 {
+background-color: #00cc66;
+}
+#s2 {
+background-color: yellow;
+}
+div {
+color:blue;
+}
+</style>
+</head>
+<body>
+
+<h1 class="center">Tabele formatate</h1>
+<div id="s1">
+<table style="width:100%" class="center">
+  <tr>
+    <th>Firstname</th>
+    <th>Lastname</th>
+    <th>Age</th>
+  </tr>
+  <tr>
+    <td>Jill</td>
+    <td>Smith</td>
+    <td>50</td>
+  </tr>
+  <tr>
+    <td>Eve</td>
+    <td>Jackson</td>
+    <td>94</td>
+  </tr>
+</table>
+<br>
+</div> 
+<div id="s2" style="width:50%">
+<br>
+<table style="width:100%" class="centre">
+  <tr>
+    <th class="centre">Firstname</th>
+    <th class="centre">Lastname</th>
+    <th class="centre">Age</th>
+  </tr>
+  <tr>
+    <td class="centre">Jill</td>
+    <td>Smith</td>
+    <td>50</td>
+  </tr>
+  <tr>
+    <td class="centre">Eve</td>
+    <td>Jackson</td>
+    <td>94</td>
+  </tr>
+</table>
+</div> 
+
+<!--
+Cele două tabele nu au o regulă background-color a lor. Fundalul nu se moștenește,
+dar un element fără fundal propriu este transparent, așa că prin el se vede fundalul părintelui.
+Primul tabel este în div-ul #s1, cu fundal verde (#00cc66). Al doilea este în div-ul #s2,
+cu fundal galben. De aceea par colorate diferit. Am pus fundal albastru pe primul tabel,
+ca să nu mai fie transparent și să nu se mai vadă verdele din #s1.
+
+Celulele celui de-al doilea tabel arată diferit între ele pentru că doar unele au clasa centre.
+Regula .centre pune chenar albastru de 5px și padding de 15px. Are specificitate de clasă
+și bate regula de tag th, td, care pune doar chenar negru de 1px, fără spațiu interior.
+Celulele fără clasă (Smith, 50, Jackson, 94) rămâneau cu chenarul subțire.
+Am uniformizat aspectul: toate celulele din #s2 primesc același chenar și același padding.
+-->
+</body>
+</html>
