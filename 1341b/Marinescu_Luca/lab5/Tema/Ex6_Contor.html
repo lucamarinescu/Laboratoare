@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Contor bec</title>
+<script>
+var aprinderi = 0;
+
+function schimbaBec() {
+    var bec = document.getElementById("bec");
+    var contor = document.getElementById("contor");
+
+    if (bec.src.indexOf("aprins") !== -1) {
+        bec.src = "Bec stins.gif";
+    } else {
+        bec.src = "Bec aprins.gif";
+        aprinderi = aprinderi + 1;
+        contor.innerHTML = "Becul a fost aprins de " + aprinderi + " ori.";
+    }
+}
+</script>
+</head>
+<body>
+
+<h1>Bec cu contor</h1>
+
+<p>
+<img id="bec" src="Bec stins.gif" width="100" height="180" onclick="schimbaBec()">
+</p>
+
+<p id="contor">Becul a fost aprins de 0 ori.</p>
+
+</body>
+</html>
