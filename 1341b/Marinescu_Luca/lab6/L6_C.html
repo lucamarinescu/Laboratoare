@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>L6_C – culori</title>
+</head>
+<body>
+  <h1 id="titlu">Culoarea acestui titlu</h1>
+  <p id="par">Prima linie a paragrafului.<br>A doua linie a paragrafului.<br>A treia linie a paragrafului.</p>
+  <script>
+    function aplicaCuloare(element, proprietate, intrebare) {
+      var culoare = prompt(intrebare, "blue");
+      if (culoare === null) {
+        return;
+      }
+      if (CSS.supports("color", culoare)) {
+        element.style[proprietate] = culoare;
+      } else {
+        alert("Culoare incorectă: " + culoare);
+      }
+    }
+
+    document.getElementById("titlu").onclick = function () {
+      aplicaCuloare(this, "color", "Introduceți culoarea textului titlului:");
+    };
+
+    document.getElementById("par").onclick = function () {
+      aplicaCuloare(this, "backgroundColor", "Introduceți culoarea de fundal a paragrafului:");
+    };
+  </script>
+</body>
+</html>

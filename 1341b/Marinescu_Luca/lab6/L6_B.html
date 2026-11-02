@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>L6_B – două paragrafe</title>
+  <style>
+    #unu {
+      color: navy;
+      font-size: 20px;
+      background-color: #dbeafe;
+      padding: 10px;
+    }
+
+    #doi {
+      color: #7f1d1d;
+      font-style: italic;
+      font-family: Georgia, serif;
+      background-color: #fef3c7;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <button id="schimba" type="button">Schimbă conținuturile</button>
+  <p id="unu">Primul paragraf: text albastru, pe fundal deschis.</p>
+  <p id="doi">Al doilea paragraf: text bordo, scris cursiv, pe fundal galben.</p>
+  <script>
+    var primul = document.getElementById("unu");
+    var alDoilea = document.getElementById("doi");
+
+    function cereTextNou() {
+      var text = prompt("Introduceți noul text al paragrafului:", this.innerHTML);
+      if (text !== null && text !== "") {
+        this.innerHTML = text;
+      }
+    }
+
+    primul.onclick = cereTextNou;
+    alDoilea.onclick = cereTextNou;
+
+    document.getElementById("schimba").onclick = function () {
+      var temporar = primul.innerHTML;
+      primul.innerHTML = alDoilea.innerHTML;
+      alDoilea.innerHTML = temporar;
+    };
+  </script>
+</body>
+</html>
