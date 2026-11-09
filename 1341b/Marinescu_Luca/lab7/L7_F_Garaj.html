@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<title>Garaj</title>
+<script>
+function citesteGaraj() {
+	var text = localStorage.getItem("garaj");
+	if (!text) {
+		return [];
+	}
+	return JSON.parse(text);
+}
+
+function scrieGaraj(lista) {
+	localStorage.setItem("garaj", JSON.stringify(lista));
+}
+
+function afiseazaGaraj() {
+	var lista = citesteGaraj();
+	document.getElementById("numar").innerHTML = "Mașini în garaj: " + lista.length;
+
+	var html = "<table border='1' cellpadding='6'>" +
+		"<tr><th>Tip</th><th>Model</th><th>Culoare</th><th>An</th><th></th></tr>";
+	for (var i = 0; i < lista.length; i++) {
+		var m = lista[i];
+		html += "<tr>" +
+			"<td>" + m.tip + "</td>" +
+			"<td>" + m.model + "</td>" +
+			"<td>" + m.culoare + "</td>" +
+			"<td>" + m.anFab + "</td>" +
+			"<td><button type='button' onclick='sterge(" + i + ")'>Șterge</button></td>" +
+			"</tr>";
+	}
+	html += "</table>";
+	document.getElementById("tabel").innerHTML = html;
+}
+
+function adauga() {
+	var lista = citesteGaraj();
+	lista.push({
+		tip: document.getElementById("tip").value,
+		model: document.getElementById("model").value,
+		culoare: document.getElementById("culoare").value,
+		anFab: Number(document.getElementById("an").value)
+	});
+	scrieGaraj(lista);
+	document.getElementById("formular").reset();
+	afiseazaGaraj();
+	return false;
+}
+
+function sterge(i) {
+	var lista = citesteGaraj();
+	lista.splice(i, 1);
+	scrieGaraj(lista);
+	afiseazaGaraj();
+}
+</script>
+</head>
+<body onload="afiseazaGaraj()" style="background-color:LightGoldenRodYellow; font-family:sans-serif;">
+<p><a href="index.html">Înapoi la laboratorul 7</a></p>
+<h1>Garaj</h1>
+
+<form id="formular" onsubmit="return adauga()">
+	<label for="tip">Tip</label> <input id="tip" required><br><br>
+	<label for="model">Model</label> <input id="model" required><br><br>
+	<label for="culoare">Culoare</label> <input id="culoare" required><br><br>
+	<label for="an">An de fabricație</label> <input id="an" type="number" required><br><br>
+	<button type="submit">Adaugă</button>
+</form>
+
+<p id="numar"></p>
+<div id="tabel"></div>
+</body>
+</html>
