@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Tabel masini</title>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+#mesaj {
+  color: red;
+}
+</style>
+</head>
+<body>
+<h1 > Masinile dorite </h1>
+
+<form onsubmit="return adaugaMasina()">
+  <input id="marca" placeholder="Marca" required>
+  <input id="model" placeholder="Model" required>
+  <input id="culoare" placeholder="Culoare" required>
+  <input id="anFab" type="number" placeholder="An fabricatie" required>
+  <button type="submit">Adauga masina</button>
+</form>
+<p id="mesaj"></p>
+
+<table id="tm">
+  <tr>
+    <th>Marca</th> <th>Model</th> <th>Culoare</th> <th>An fabricatie</th>
+  </tr>
+</table>
+<script>
+var m1 = new masina("Opel", "Zafira", "gri", 2015);
+var m2 = new masina("Seat", "Ibiza", "roz", 2018);
+
+document.getElementById("tm").innerHTML += m1.randNou();
+document.getElementById("tm").innerHTML += m2.randNou();
+
+if (localStorage.masinaN) {
+  var masinaJSON = localStorage.masinaN;
+  var mNoua = JSON.parse(masinaJSON);
+  document.getElementById("tm").innerHTML += mNoua.randNou; // proprietate
+}
+
+function masina(mk, md, cl, an){
+  this.marca = mk;
+  this.model = md;
+  this.culoare = cl;
+  this.anFab = an;
+  this.randNou = function() {
+    return "<tr><td>" + this.marca + "</td><td>" + this.model +
+      "</td><td>" + this.culoare + "</td><td>" + this.anFab + "</td></tr>";
+  };
+}
+
+function valideaza(marca, model, culoare, an) {
+  if (marca.trim() === "") {
+    return "Marca nu poate fi goală sau formată doar din spații.";
+  }
+  if (model.trim() === "") {
+    return "Modelul nu poate fi gol sau format doar din spații.";
+  }
+  if (culoare.trim() === "") {
+    return "Culoarea nu poate fi goală sau formată doar din spații.";
+  }
+  var anNum = Number(an);
+  var anCurent = new Date().getFullYear();
+  if (!Number.isInteger(anNum) || anNum < 1900 || anNum > anCurent) {
+    return "Anul trebuie să fie un număr întreg între 1900 și " + anCurent + ".";
+  }
+  return "";
+}
+
+function adaugaMasina() {
+  var marca = document.getElementById("marca").value;
+  var model = document.getElementById("model").value;
+  var culoare = document.getElementById("culoare").value;
+  var an = document.getElementById("anFab").value;
+  var eroare = valideaza(marca, model, culoare, an);
+  var mesaj = document.getElementById("mesaj");
+  if (eroare !== "") {
+    mesaj.innerHTML = eroare;
+    return false;
+  }
+  mesaj.innerHTML = "";
+  marca = marca.trim();
+  model = model.trim();
+  culoare = culoare.trim();
+  an = Number(an);
+  var mNoua = new masina(marca, model, culoare, an);
+  document.getElementById("tm").innerHTML += mNoua.randNou();
+  mNoua.randNou = mNoua.randNou().toString();
+  var myJSON = JSON.stringify(mNoua);
+  localStorage.setItem("masinaN", myJSON);
+  return false;
+}
+</script>
+
+<!--
+Exercițiul 4
+
+(a) Cheia masinaN conține textul JSON al mașinii: marca, model, culoare, an
+    și randNou ca text (rândul de tabel).
+    Exemplu: {"marca":"Dacia","model":"Logan","culoare":"alb","anFab":2015,"randNou":"<tr><td>Dacia</td><td>Logan</td><td>alb</td><td>2015</td></tr>"}
+
+(b) JSON.stringify nu salvează funcțiile. Linia transformă randNou din funcție în text,
+    ca să poată fi salvat. Fără ea, randNou nu ar fi în JSON și mașina nu ar apărea după reîncărcare.
+
+(c) După reîncărcare, randNou este deja text, nu funcție. De aceea se scrie fără paranteze.
+    Cu paranteze ar încerca să apeleze un text și ar da eroare.
+
+(d) După reîncărcare apare doar ultima mașină adăugată, la fel ca în L8_A.
+    Fiecare mașină nouă suprascrie cheia masinaN. Opel și Seat apar mereu, pentru că sunt scrise în cod.
+-->
+</body>
+</html>
