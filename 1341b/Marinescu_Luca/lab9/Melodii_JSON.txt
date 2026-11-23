@@ -1,0 +1,1 @@
+[{"titlu":"Thunderstruck","muzica":"Angus","versuri":"Malcolm","interpretare":"AC/DC"},{"titlu":"Slow Low","muzica":"Jason","versuri":"Derulo","interpretare":"Jason Derulo"},{"titlu":"With or Without You","muzica":"The Edge","versuri":"Bono","interpretare":"U2"}]

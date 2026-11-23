@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tabel masini</title>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+ * {
+        box-sizing: border-box;
+      }
+.loginPopup {
+        position: relative;
+        text-align: center;
+        width: 100%;
+      }
+      .formPopup {
+        display: none;
+        position: fixed;
+        left: 45%;
+        top: 5%;
+        transform: translate(-50%, 5%);
+        border: 3px solid #999999;
+        z-index: 9;
+      }
+	        .formContainer {
+        max-width: 400px;
+        padding: 20px;
+        background-color: #fff;
+      }
+	        .formContainer input[type=text]{
+        width: 80%;
+        padding: 15px;
+        margin: 5px 0 20px 0;
+        border: none;
+        background: #eee;
+      }
+</style>
+</head>
+<body>
+<h1 > Masini incarcate de pe server </h1>
+
+<p>
+
+<button onclick="getAJAX('Masini_JSON.txt')";>Incarca array masini de pe server</button>
+<br>
+<br><br>
+<button onclick="loadTable()";> Incarca tabel masini</button>
+<br>
+<br><br>
+<button onclick="openFormA()";> Adauga masina</button>
+<table id="tm">
+<tr>
+    <th>Marca</th>
+    <th>Model</th>
+    <th>Culoare</th>
+	<th colspan=2 style="text-align:center">Operatii</th>
+  </tr>
+  
+</table>
+</p>
+<div class="formPopup" id="adauga">
+        <form action="javascript:;" onsubmit="adaugaMasina(this)" class="formContainer">
+          <h2>Adauga masina</h2>
+          <label for="marca">
+            <strong>Marca</strong>
+          </label>
+          <input type="text" id="marca" placeholder="Marca masinii" name="marca" required>
+          <label for="model">
+            <strong>Model</strong>
+          </label>
+          <input type="text" id="model" placeholder="Modelul masinii" name="model" required>
+		  <label for="culoare">
+            <strong>Culoare</strong>
+          </label>
+          <input type="text" id="culoare" placeholder="Culoarea masinii" name="culoare" required>
+          <button type="submit" class="btn">Adauga</button>
+          <button type="button" class="btn cancel" onclick="closeForm('adauga')">Close</button>
+        </form>
+      </div>
+	  <div class="formPopup" id="modifica">
+        <form action="javascript:;" onsubmit="modificaMasina()" class="formContainer">
+          <h2>Modifica masina</h2>
+          <label for="marcaM">
+            <strong>Marca</strong>
+          </label>
+          <input type="text" id="marcaM" placeholder="Marca masinii" name="marcaM" required>
+          <label for="modelM">
+            <strong>Model</strong>
+          </label>
+          <input type="text" id="modelM" placeholder="Modelul masinii" name="modelM" required>
+		  <label for="culoareM">
+            <strong>Culoare</strong>
+          </label>
+          <input type="text" id="culoareM" placeholder="Culoarea masinii" name="culoareM" required>
+          <button type="submit" class="btn">Modifica</button>
+          <button type="button" class="btn cancel" onclick="closeForm('modifica')">Close</button>
+        </form>
+      </div>
+<script>
+const masini2Show = [];
+let fileContent;
+let row = 0;
+async function getAJAX(file) {
+  let myObject = await fetch(file);
+  fileContent = await myObject.text();
+
+}
+
+function loadTable(){
+
+var masiniStored = JSON.parse(fileContent);
+for(i=0; i < masiniStored.length ; i++){
+
+document.getElementById("tm").innerHTML += masiniStored[i].randNou+ "<td><button onclick='openForm("+i+")';>Modificare</button></td><td><button onclick='stergeMasina("+i+")';>Stergere</button></td></tr>";
+masini2Show.push(masiniStored[i]);
+
+}
+}
+
+function modificaMasina(){
+
+var mMod = new masina(marcaM.value, modelM.value, culoareM.value);
+mMod.randNou = 	mMod.randNou().toString();
+masini2Show.splice(nr, 1, mMod);
+var myJSON = JSON.stringify(masini2Show);
+localStorage.setItem("carsArray", myJSON);
+marcaM.value =null;
+modelM.value = null;
+culoareM.value = null;
+closeForm("modifica");
+//reload table
+document.getElementById("tm").innerHTML = "<tr><th>Marca</th><th>Model</th>    <th>Culoare</th>	<th colspan=2 style='text-align:center'>Operatii</th></tr>";
+for(i=0; i < masini2Show.length ; i++){
+
+document.getElementById("tm").innerHTML += masini2Show[i].randNou+ "<td><button onclick='openForm("+i+")';>Modificare</button></td><td><button onclick='stergeMasina("+i+")';>Stergere</button></td></tr>";
+}
+}
+
+function stergeMasina(nr){
+masini2Show.splice(nr, 1);
+var myJSON = JSON.stringify(masini2Show);
+localStorage.setItem("carsArray", myJSON);
+//reload table
+document.getElementById("tm").innerHTML = "<tr><th>Marca</th><th>Model</th>    <th>Culoare</th>	<th colspan=2 style='text-align:center'>Operatii</th></tr>";
+for(i=0; i < masini2Show.length ; i++){
+
+document.getElementById("tm").innerHTML += masini2Show[i].randNou+ "<td><button onclick='openForm("+i+")';>Modificare</button></td><td><button onclick='stergeMasina("+i+")';>Stergere</button></td></tr>";
+}
+}
+
+
+function masina(mk, md, cl){
+this.marca= mk;
+this.model = md;
+this.culoare = cl;
+this.randNou = function() {return "<tr><td>" + this.marca +"</td><td>" + this.model + "</td><td>" + this.culoare + "</td>"}
+}
+
+function adaugaMasina(frm) {
+
+var mNoua = new masina(frm.marca.value, frm.model.value, frm.culoare.value);
+
+document.getElementById("tm").innerHTML += mNoua.randNou() + "<td><button onclick='openForm("+ masini2Show.length +")';>Modificare</button></td><td><button onclick='stergeMasina("+masini2Show.length+")';>Stergere</button></td></tr>";
+
+mNoua.randNou = 	mNoua.randNou().toString();
+masini2Show.push(mNoua);
+var myJSON = JSON.stringify(masini2Show);
+localStorage.setItem("carsArray", myJSON);
+frm.marca.value = null;
+frm.model.value = null;
+frm.culoare.value = null;
+}
+      function openFormA() {
+        document.getElementById("adauga").style.display = "block";
+      }
+	        function openForm(rand) {
+        let frm = document.getElementById("modifica");
+		frm.style.display = "block";
+		nr = rand;
+		marcaM.value = masini2Show[nr].marca;
+		modelM.value = masini2Show[nr].model;
+		culoareM.value = masini2Show[nr].culoare;
+      }
+      function closeForm(opt) {
+        document.getElementById(opt).style.display = "none";
+      }
+
+</script>
+</body>
+</html>
